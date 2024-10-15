@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { db } from '../firebaseConfig.ts';
 
 interface AboutUsData {
   goals: {
@@ -71,7 +71,7 @@ const AboutUs = () => {
     lang: string
 ) => {
     if (aboutUsData) {
-        setAboutUsData((prevData) => ({
+        setAboutUsData((prevData: any) => ({
             ...prevData,
             [section]: section === 'subtitle' 
                 ? { ...prevData[section], [lang]: e.target.value }
