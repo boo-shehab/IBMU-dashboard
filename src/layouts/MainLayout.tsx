@@ -1,20 +1,22 @@
-import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
-import Sidebar from '../components/SideBar'
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../components/SideBar';
 import Navbar from '../components/NavBar';
 
 const MainLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsOpen(!isOpen);
   };
 
   return (
     <div className="flex h-screen">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      {/* Sidebar for larger screens */}
+      <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
 
-      <div className="flex-1 flex flex-col">
+      <div className={`flex-1 flex flex-col ${isOpen ? 'bg-gray-800 opacity-50 pointer-events-none' : ''}`}>
+        {/* Navbar */}
         <Navbar toggleSidebar={toggleSidebar} />
         <div className="flex-1 bg-gray-100 p-6 overflow-auto">
           <Outlet />
@@ -22,6 +24,6 @@ const MainLayout = () => {
       </div>
     </div>
   );
-}
+};
 
-export default MainLayout
+export default MainLayout;

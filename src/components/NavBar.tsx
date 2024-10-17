@@ -1,20 +1,25 @@
-import { GiHamburgerMenu } from "react-icons/gi";
+// Navbar.tsx
+import { FaBars } from 'react-icons/fa';
 
 const Navbar = ({ toggleSidebar }) => {
-    return (
-      <div className="flex items-center gap-4 bg-gray-900 p-4 text-white">
+  return (
+    <nav className="bg-gray-900 text-white h-16 flex items-center justify-between px-4 shadow-md z-40">
+      {/* Sidebar toggle button */}
+      <div className="flex items-center">
         <button
-          className="text-gray-300 focus:outline-none md:hidden"
           onClick={toggleSidebar}
+          className="text-white focus:outline-none lg:hidden"
         >
-          <GiHamburgerMenu />
+          <FaBars size={24} />
         </button>
-        <div className="text-xl font-bold">IBMU Dashboard</div>
-        
-        {/* Sidebar toggle button */}
+        <h1 className="ml-4 text-xl font-bold">IBMU Dashboard</h1>
       </div>
-    );
-  };
-  
-  export default Navbar;
-  
+      {/* You can add additional navigation items on the right */}
+      <div>
+        {/* Right side items, e.g., user profile or other actions */}
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

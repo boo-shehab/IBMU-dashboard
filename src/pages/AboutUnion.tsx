@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { GrCloudUpload } from "react-icons/gr";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import { db } from '../firebaseConfig.ts';
 
 interface AboutUsData {
@@ -180,6 +182,7 @@ const deleteFile = async (fileUrl: string) => {
           img={aboutUsData.img}
           isEnglish={isEnglish}
           editing={editing}
+          newImage={newImage}
           onChange={(e) => handleChange(e, 'subtitle', isEnglish ? 'en' : 'ar')}
           onImageChange={handleImageChange}
         />
@@ -196,6 +199,7 @@ const deleteFile = async (fileUrl: string) => {
             editing={editing}
             isEnglish={isEnglish}
             pdf={aboutUsData.pdf}
+            newPdf={newPdf}
             onPdfChange={handlePdfChange}
           />
           <EditableSection
@@ -238,6 +242,8 @@ const EditableSection = ({
     img,
     pdf,
     isEnglish,
+    newImage,
+    newPdf,
     editing,
     onChange,
     onPdfChange,
@@ -247,6 +253,8 @@ const EditableSection = ({
     content?: string;
     img?: string;
     pdf?: string;
+    newImage?: File | null;
+    newPdf?: File | null;
     isEnglish: boolean;
     editing: boolean;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
@@ -267,35 +275,51 @@ const EditableSection = ({
       {img && (
         <>
           <img src={img} alt={title} className="max-w-full h-auto mb-4 w-full" /> {}
-          {editing && (
+          {editing && (<div className="flex items-center justify-center">
+            <label
+            className={`flex items-center px-4 py-2 rounded-full cursor-pointer ${
+                newImage ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"
+            } text-white`}
+            >
+            {newImage ? <AiOutlineCheckCircle className="mr-2" /> : <GrCloudUpload className="mr-2" />}
+            <span>{newImage ? "image selected" : "Choose image"}</span>
             <input
-              type="file"
-              accept="image/*"
-              onChange={onImageChange}
-              className="mt-2 mb-4"
+                type="file"
+                accept="image/*"
+                onChange={onImageChange}
+                className="hidden"
             />
-          )}
+            </label>
+        </div>
+)}
         </>
       )}
       {pdf && (
         <>
           <a href={pdf} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-            Download PDF
+            Open PDF
           </a>
           {editing && (
-            <>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={onPdfChange}
-                className="mt-2 mb-4"
-              />
-            </>
+            <div className="flex items-center justify-center mt-2">
+            <label
+                className={`flex items-center px-4 py-2 rounded-full cursor-pointer ${
+                    newPdf ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"
+                } text-white`}
+            >
+                {newPdf ? <AiOutlineCheckCircle className="mr-2" /> : <GrCloudUpload className="mr-2" />}
+                <span>{newPdf ? "PDF selected" : "Choose PDF"}</span>
+                <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={onPdfChange}
+                    className="hidden"
+                />
+            </label>
+        </div>
           )}
         </>
       )}
     </div>
   );
   
-
 export default AboutUs;

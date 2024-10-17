@@ -12,7 +12,7 @@ interface EditableSectionProps {
   onImageChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const EditableSection: React.FC<EditableSectionProps> = ({
+const EditableSection = ({
   title,
   content,
   img,
@@ -22,7 +22,7 @@ const EditableSection: React.FC<EditableSectionProps> = ({
   onChange,
   onPdfChange,
   onImageChange,
-}) => (
+}: EditableSectionProps) => (
   <div className="p-6 bg-white rounded-lg shadow-lg">
     <h2 className="text-2xl font-semibold mb-4">{title}</h2>
     {editing && content ? (
