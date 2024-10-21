@@ -8,6 +8,8 @@ import MessagesPage from './pages/MessagesPage';
 
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import EventsPage from './pages/EventsPage';
+import NewsAndResearch from './pages/NewsAndResearch';
 
 function App() {
   
@@ -35,6 +37,14 @@ const routesConfig = [
         path: "/Messages",
         element: <MessagesPage />,
       },
+      {
+        path: "/events",
+        element: <EventsPage />
+      },
+      {
+        path: "/newsAndResearch",
+        element: <NewsAndResearch />
+      }
     ],
 
   }

@@ -1,18 +1,17 @@
 // Sidebar.jsx
 import { NavLink } from "react-router-dom";
-import { IoClose } from "react-icons/io5"; // Import a close icon
+import { IoClose } from "react-icons/io5";
 import logo from "../assets/logo.jpg";
 import useMediaQuery from "../hooks/useMediaQuery"; 
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isOpen, toggleSidebar }: any) => {
   const isLg = useMediaQuery("(mx-width: 1024px)");
   return (
     <>
-      {/* Overlay for darker background */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40"
-          onClick={toggleSidebar} // Close sidebar when clicking outside of it
+          onClick={toggleSidebar}
         ></div>
       )}
 
@@ -23,7 +22,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       >
         <div className="flex items-center justify-between py-8 px-4 bg-gray-900">
           <img src={logo} className="w-20 h-20 rounded-xl" alt="logo" />
-          {/* Close button for medium screens */}
           <button
             className="text-white text-2xl lg:hidden"
             onClick={toggleSidebar}
@@ -40,7 +38,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 isActive ? "bg-gray-700 text-white" : ""
               }`
             }
-            onClick={isLg ? toggleSidebar : undefined} // Close sidebar when link is clicked
+            onClick={isLg ? toggleSidebar : undefined}
           >
             Dashboard
           </NavLink>
@@ -51,7 +49,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 isActive ? "bg-gray-700 text-white" : ""
               }`
             }
-            onClick={isLg ? toggleSidebar : undefined} // Close sidebar when link is clicked
+            onClick={isLg ? toggleSidebar : undefined}
           >
             About Union
           </NavLink>
@@ -62,7 +60,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 isActive ? "bg-gray-700 text-white" : ""
               }`
             }
-            onClick={isLg ? toggleSidebar : undefined} // Close sidebar when link is clicked
+            onClick={isLg ? toggleSidebar : undefined}
           >
             Contact Info
           </NavLink>
@@ -73,9 +71,31 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 isActive ? "bg-gray-700 text-white" : ""
               }`
             }
-            onClick={isLg ? toggleSidebar : undefined} // Close sidebar when link is clicked
+            onClick={isLg ? toggleSidebar : undefined}
           >
             Messages
+          </NavLink>
+          <NavLink
+            to="/events"
+            className={({ isActive }) =>
+              `px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white ${
+                isActive ? "bg-gray-700 text-white" : ""
+              }`
+            }
+            onClick={isLg ? toggleSidebar : undefined}
+          >
+            Events
+          </NavLink>
+          <NavLink
+            to="/newsAndResearch"
+            className={({ isActive }) =>
+              `px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white ${
+                isActive ? "bg-gray-700 text-white" : ""
+              }`
+            }
+            onClick={isLg ? toggleSidebar : undefined}
+          >
+            News & Research
           </NavLink>
         </nav>
       </div>

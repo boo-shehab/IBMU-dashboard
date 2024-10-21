@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig.ts';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css'; // Import the default styles
-
+import 'react-phone-number-input/style.css'; 
 interface Headquarter {
   email: string;
   embedLocation: string;
@@ -29,8 +28,8 @@ const ContactInfoPage = () => {
   const [aboutUsData, setAboutUsData] = useState<Headquarter | null>(null);
   const [originalData, setOriginalData] = useState<Headquarter | null>(null);
   const [docId, setDocId] = useState<string | null>(null);
-  const [phone, setPhone] = useState<string | undefined>('964'); // Default to Iraq's country code
-  const [errors, setErrors] = useState<{ [key: string]: string }>({}); // State for error messages
+  const [phone, setPhone] = useState<string | undefined>('964');
+  const [errors, setErrors] = useState<{ [key: string]: string }>({}); 
 
   const fetchAboutUsData = async () => {
     const querySnapshot = await getDocs(collection(db, 'Headquarter'));
@@ -39,14 +38,14 @@ const ContactInfoPage = () => {
       setAboutUsData(data);
       setOriginalData(data);
       setDocId(doc.id);
-      setPhone(data.phone); // Set the phone from fetched data
+      setPhone(data.phone);
     });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     if (aboutUsData) {
       setAboutUsData({ ...aboutUsData, [e.target.name]: e.target.value });
-      setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: '' })); // Clear the error for the current field
+      setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: '' })); 
     }
   };
 
@@ -87,7 +86,7 @@ const ContactInfoPage = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

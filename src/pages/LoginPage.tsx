@@ -1,4 +1,3 @@
-// src/LoginPage.tsx
 import React, { useState } from 'react';
 import { auth, signInWithEmailAndPassword } from '../firebaseConfig';
 import { browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
@@ -15,14 +14,8 @@ const LoginPage = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Set persistence based on "Remember Me" checkbox
-    //   const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-    //   await setPersistence(auth, persistence);
-
-      // Sign in with email and password
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/')
-      // Handle successful login (e.g., redirect to dashboard)
       console.log("User logged in successfully");
     } catch (error: any) {
       setError(error.message);

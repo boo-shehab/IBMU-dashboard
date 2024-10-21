@@ -12,11 +12,8 @@ const MainLayout = () => {
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar for larger screens */}
       <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
-
       <div className={`flex-1 flex flex-col ${isOpen ? 'bg-gray-800 opacity-50 pointer-events-none' : ''}`}>
-        {/* Navbar */}
         <Navbar toggleSidebar={toggleSidebar} />
         <div className="flex-1 bg-gray-100 p-6 overflow-auto">
           <Outlet />

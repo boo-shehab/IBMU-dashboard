@@ -1,4 +1,3 @@
-// useMediaQuery.js
 import { useEffect, useState } from "react";
 
 const useMediaQuery = (query) => {

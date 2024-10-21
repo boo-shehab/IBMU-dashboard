@@ -7,10 +7,11 @@ interface CardProps {
   date?: string;
   description?: string;
   onViewDetails: () => void;
+  icon?: any
   children?: React.ReactNode;
 }
 
-const Card = ({ image, title, date, description, onViewDetails, children }: CardProps) => {
+const Card = ({ image, title, date, description, onViewDetails,icon, children}: CardProps) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
       {image && (
@@ -24,17 +25,18 @@ const Card = ({ image, title, date, description, onViewDetails, children }: Card
         {title && (
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-            <button onClick={ onViewDetails} className="text-blue-400">
-              <FaEye className="mr-1" />
-            </button>
-
+            {icon && (
+              <button onClick={onViewDetails} >
+                {icon}
+              </button>
+            )}
           </div>
         )}
         {date && (
           <p className="text-gray-500 text-sm">{date}</p>
         )}
         {description && (
-          <p className="text-gray-700 mt-2">{description}</p>
+          <p className="text-gray-700 mt-2 h-24 overflow-hidden pb-4">{description}</p>
         )}
         {children && (
           <div className="flex items-center mt-4">

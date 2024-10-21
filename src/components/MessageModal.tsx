@@ -17,12 +17,12 @@ interface MessageModalProps {
 }
 
 const MessageModal = ({ isOpen, onClose, message, children }: MessageModalProps) => {
-  if (!isOpen || !message) return null; // Don't render if not open or no message
+  if (!isOpen || !message) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-lg">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-start	 mb-4">
             <div>
               <h2 className="text-xl font-semibold">send by {message.name}</h2>
               <p className='text-gray-500'>{message.timestamp}</p>

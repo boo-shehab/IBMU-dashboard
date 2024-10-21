@@ -3,6 +3,7 @@ import Card from '../components/Card';
 import MessageModal from '../components/MessageModal';
 import { collection, getDocs, Timestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import { FaEye } from 'react-icons/fa';
 
 interface Messages {
   email: string;
@@ -18,6 +19,7 @@ const MessagesPage = () => {
   const [messages, setMessages] = useState<{ id: string; data: Messages }[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<{ id: string; data: Messages } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'new' | 'read' | 'responded'>('all');
 
   const getMessages = async () => {
     try {
@@ -50,19 +52,15 @@ const MessagesPage = () => {
     setSelectedMessage(null);
   };
 
-  // Handler for Respond action
   const handleRespond = async () => {
     if (selectedMessage) {
       try {
-        // Logic to respond to the message (replace with your implementation)
         alert(`Responding to ${selectedMessage.data.name}`);
 
-        // Update the message document to set status to "responded"
         await updateDoc(doc(db, 'Message', selectedMessage.id), { 
-          status: 'responded' // Update status to responded
+          status: 'responded'
         });
 
-        // Update local state to reflect the change
         setMessages((prevMessages) =>
           prevMessages.map(msg =>
             msg.id === selectedMessage.id ? { ...msg, data: { ...msg.data, status: 'responded' } } : msg
@@ -76,16 +74,12 @@ const MessagesPage = () => {
     }
   };
 
-  // Handler for Mark as Read action
   const handleMarkAsRead = async () => {
     if (selectedMessage) {
       try {
-        // Update the message document to set status to "read"
         await updateDoc(doc(db, 'Message', selectedMessage.id), { 
-          status: 'read' // Update status to read
+          status: 'read'
         });
-
-        // Update local state to reflect the change
         setMessages((prevMessages) =>
           prevMessages.map(msg =>
             msg.id === selectedMessage.id ? { ...msg, data: { ...msg.data, status: 'read' } } : msg
@@ -100,7 +94,6 @@ const MessagesPage = () => {
     }
   };
 
-  // Handler for Delete action
   const handleDelete = async () => {
     if (selectedMessage) {
       try {
@@ -114,43 +107,62 @@ const MessagesPage = () => {
     }
   };
 
+  const filteredMessages = messages.filter((message) => {
+    if (filter === 'all') return true;
+    return message.data.status === filter;
+  });
+
   return (
     <div>
       <div className="pageHeader flex items-center justify-between">
-        <h1>{messages.length} messages</h1>
+        <h1>{filteredMessages.length} messages</h1>
+        <div>
+          <label htmlFor="statusFilter" className="mr-2 font-bold">Filter by Status:</label>
+          <select
+            id="statusFilter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as 'all' | 'new' | 'read' | 'responded')}
+            className="border border-gray-300 rounded px-4 py-2"
+          >
+            <option value="all">All</option>
+            <option value="new">New</option>
+            <option value="read">Read</option>
+            <option value="responded">Responded</option>
+          </select>
+        </div>
       </div>
+
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3'>
-        {messages.length > 0 ? (
-          messages.map((message) => (
+        {filteredMessages.length > 0 ? (
+          filteredMessages.map((message) => (
             <Card
               key={message.id}
-              image={undefined}
               title={message.data.title}
               date={message.data.timestamp.toDate().toLocaleString()}
+              icon={<FaEye className={`mr-1 ${message.data.status === 'new' ? 'text-blue-500' : message.data.status === 'read' ? 'text-green-500' : 'text-yellow-500'}`} />}
               description={message.data.content}
-              onViewDetails={() => handleViewDetails(message)} // Pass the function
+              onViewDetails={() => handleViewDetails(message)}
             />
           ))
         ) : (
-          <p>No messages found.</p>
+          <p>No news found. You might want to check again later!</p>
         )}
       </div>
 
-      {/* Message Modal */}
       <MessageModal
         isOpen={isModalOpen}
         onClose={closeModal}
         message={selectedMessage ? { ...selectedMessage.data, timestamp: selectedMessage.data.timestamp.toDate().toLocaleString() } : null}
       >
-        <button onClick={handleRespond} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-          Respond
-        </button>
-        <button onClick={handleMarkAsRead} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-          Mark as Read
-        </button>
-        <button onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-          Delete
-        </button>
+          <button onClick={handleRespond} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            Respond
+          </button>
+          <button onClick={handleMarkAsRead} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+            Mark as Read
+          </button>
+          <button onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+            Delete
+          </button>
       </MessageModal>
     </div>
   );
