@@ -4,6 +4,7 @@ import { collection, getDocs, Timestamp, doc, deleteDoc, updateDoc } from 'fireb
 import { db } from '../firebaseConfig';
 import { FaEye } from 'react-icons/fa';
 import NewsCreate from '../components/NewsCreate';
+import { MdEdit } from 'react-icons/md';
 
 interface News {
     content: {ar: string, en: string},
@@ -81,7 +82,7 @@ const NewsAndResearch = () => {
                 title={data.data.title.en}
                 image={data.data.img}
                 date={data.data.date.toDate().toLocaleString()}
-                icon={<FaEye className={`mr-1 text-yellow-500`} />}
+                icon={<MdEdit className={`mr-1 text-yellow-500`} />}
                 description={<div className="default-styles" dangerouslySetInnerHTML={{ __html: data.data.content.en}} />}
                 onViewDetails={() => handleEdit(data)}
               >

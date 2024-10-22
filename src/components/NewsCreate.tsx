@@ -34,6 +34,7 @@ const NewsCreate: React.FC<NewsCreateProps> = ({ isOpen, onClose, newsToEdit }) 
   const [date, setDate] = useState('');
   const [img, setImg] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [isImageURL, setIsImageURL] = useState(true); 
 
   useEffect(() => {
     if (newsToEdit) {
@@ -61,17 +62,26 @@ const NewsCreate: React.FC<NewsCreateProps> = ({ isOpen, onClose, newsToEdit }) 
     setImg('');
     setFile(null);
   };
+  const handleChange = (bool: boolean) => {
+    setIsImageURL(bool)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     let imageUrl = img;
-    
     if (file) {
-      const storageRef = ref(storage, `images/${Date.now()}_${file.name}`);
+      const storageRef = ref(storage, `images/news/${Date.now()}_${file.name}`);
       await uploadBytes(storageRef, file);
       imageUrl = await getDownloadURL(storageRef);
     }
+    
+    
+    if(newsToEdit && newsToEdit.data.img !== imageUrl && newsToEdit.data.img.includes('firebasestorage')) {
+        const oldImageRef = ref(storage, newsToEdit.data.img);
+        await deleteObject(oldImageRef);
+    }
+
 
     const newsData = {
       title: { en: titleEn, ar: titleAr },
@@ -83,10 +93,6 @@ const NewsCreate: React.FC<NewsCreateProps> = ({ isOpen, onClose, newsToEdit }) 
 
     try {
       if (newsToEdit) {
-        if (img !== imageUrl) {
-          const oldImageRef = ref(storage, img);
-          await deleteObject(oldImageRef);
-        }
         await setDoc(doc(db, 'news', newsToEdit.id), newsData);
       } else {
         await setDoc(doc(db, 'news', Date.now().toString()), newsData);
@@ -176,30 +182,48 @@ const NewsCreate: React.FC<NewsCreateProps> = ({ isOpen, onClose, newsToEdit }) 
               className="w-full h-[10rem] pb-10"
             />
           </div>
+          <div className='flex items-center'>
+                <p>add image by </p>
+                <div className="ml-3 inline-flex p-1 bg-gray-200 rounded-full">
+                    <button type='button' onClick={() => {handleChange(true) }} className={` rounded-full cursor-pointer hover:bg-gray-400 text-gray-700 font-bold py-1 px-5 ${!isImageURL? 'bg-gray-200' : 'bg-gray-300'}`}>
+                        URL
+                    </button>
+                    <button type='button' onClick={() => {handleChange(false) }} className={`rounded-full cursor-pointer hover:bg-gray-400 text-gray-700 font-bold py-1 px-5 ${isImageURL? 'bg-gray-200' : 'bg-gray-300'}`}>
+                        file
+                    </button>
+                </div>
+            </div>
           <div className="mb-4">
-            <label className="block text-gray-700">Image URL</label>
-            <input
-              type="text"
-              value={img}
-              onChange={(e) => {
-                setImg(e.target.value);
-                setFile(null);
-              }}
-              placeholder="Enter Image URL"
-              className="w-full resize-none overflow-y-auto border p-2 mb-2"
-            />
-            <label className="block text-gray-700">Or Upload Image</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                if (e.target.files) {
-                  setFile(e.target.files[0]);
-                  setImg('');
-                }
-              }}
-              className="border p-2"
-            />
+            {isImageURL? (
+                <>
+                    <label className="block text-gray-700">Image URL</label>
+                    <input
+                    type="text"
+                    value={img}
+                    onChange={(e) => {
+                        setImg(e.target.value);
+                        setFile(null);
+                    }}
+                    placeholder="Enter Image URL"
+                    className="w-full resize-none overflow-y-auto border p-2 mb-2"
+                    />
+                </>
+            ): (
+                <>
+                    <label className="block text-gray-700">Or Upload Image</label>
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                        if (e.target.files) {
+                        setFile(e.target.files[0]);
+                        setImg('');
+                        }
+                    }}
+                    className="w-full resize-none overflow-y-auto border p-2 mb-2"
+                    />
+                </>
+            )}
           </div>
           <div className="flex justify-end">
             <button type="button" onClick={onClose} className="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
