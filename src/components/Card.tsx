@@ -5,7 +5,7 @@ interface CardProps {
   image?: string;
   title?: string;
   date?: string;
-  description?: string;
+  description?: any;
   onViewDetails: () => void;
   icon?: any
   children?: React.ReactNode;

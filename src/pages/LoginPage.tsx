@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { auth, signInWithEmailAndPassword } from '../firebaseConfig';
-import { browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {

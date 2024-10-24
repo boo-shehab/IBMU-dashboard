@@ -9,8 +9,11 @@ import EventsPage from './pages/EventsPage';
 import NewsAndResearch from './pages/NewsAndResearch';
 import { NotificationContainer } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import ProtectedRoute from './components/ProtectedRoute';  // Import ProtectedRoute
-import AuthRoute from './components/AuthRoute';  // Import AuthRoute
+import ProtectedRoute from './components/ProtectedRoute'; 
+import AuthRoute from './components/AuthRoute';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 function App() {
 
@@ -67,6 +70,7 @@ function App() {
     <>
       <RouterProvider router={router} />
       <NotificationContainer />
+      <ToastContainer />
     </>
   );
 }

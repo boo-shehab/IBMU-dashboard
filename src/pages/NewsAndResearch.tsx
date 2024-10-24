@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import { collection, getDocs, Timestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
-import { FaEye } from 'react-icons/fa';
 import NewsCreate from '../components/NewsCreate';
 import { MdEdit } from 'react-icons/md';
 
@@ -92,7 +91,7 @@ const NewsAndResearch = () => {
               </Card>
             ))
           ) : (
-            <p>No messages found. You might want to check again later!</p>
+            <p>No News found. You might want to check again later!</p>
           )}
         </div>
         

@@ -3,6 +3,8 @@ import { db } from '../firebaseConfig.ts';
 import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css'; 
+import Button from '../components/Button.tsx';
+import { Bounce, toast } from 'react-toastify';
 interface Headquarter {
   email: string;
   embedLocation: string;
@@ -27,6 +29,7 @@ interface Headquarter {
 const ContactInfoPage = () => {
   const [aboutUsData, setAboutUsData] = useState<Headquarter | null>(null);
   const [originalData, setOriginalData] = useState<Headquarter | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [docId, setDocId] = useState<string | null>(null);
   const [phone, setPhone] = useState<string | undefined>('964');
   const [errors, setErrors] = useState<{ [key: string]: string }>({}); 
@@ -90,13 +93,41 @@ const ContactInfoPage = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setIsLoading(true)
     e.preventDefault();
-    if (validateForm()) {
-      if (docId) {
-        await updateDoc(doc(db, 'Headquarter', docId), aboutUsData);
-        alert('Information updated successfully!');
+    try{
+      if (validateForm()) {
+        if (docId) {
+          await updateDoc(doc(db, 'Headquarter', docId), aboutUsData);
+        }
       }
-    }
+      toast.success('Contact info updated successfully', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce
+        });
+      }catch(e){
+        console.log(e);
+        toast.error(`error ContactInfo hasn't be updated`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce
+        });
+      }finally{
+        setIsLoading(false)
+      }
   };
 
   useEffect(() => {
@@ -221,12 +252,13 @@ const ContactInfoPage = () => {
           {errors['workingTimes.time.ar'] && <span className="text-red-500 text-sm">{errors['workingTimes.time.ar']}</span>}
         </div>
 
-        <button
+        <Button
           type="submit"
+          isLoading={isLoading}
           className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Submit
-        </button>
+        </Button>
       </form>
     </div>
   );

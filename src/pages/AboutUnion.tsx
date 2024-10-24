@@ -4,6 +4,8 @@ import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { GrCloudUpload } from "react-icons/gr";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { db } from '../firebaseConfig.ts';
+import Button from '../components/Button.tsx';
+import { toast } from 'react-toastify';
 
 interface AboutUsData {
   goals: {
@@ -39,6 +41,7 @@ const AboutUs = () => {
   const [editing, setEditing] = useState(false);
   const [newImage, setNewImage] = useState<File | null>(null);
   const [newPdf, setNewPdf] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const fetchAboutUsData = async () => {
     const querySnapshot = await getDocs(collection(db, 'aboutUs'));
@@ -117,6 +120,7 @@ const AboutUs = () => {
     }
   };const handleSave = async () => {
     if (aboutUsData && docId) {
+      setIsLoading(true)
         try {
             const updatedData = { ...aboutUsData };
 
@@ -136,15 +140,19 @@ const AboutUs = () => {
 
             const docRef = doc(db, 'aboutUs', docId);
             await updateDoc(docRef, updatedData);
-            
+
             setNewImage(null);
             setNewPdf(null);
             setEditing(false);
 
-            await fetchAboutUsData(); 
+            await fetchAboutUsData();
+            toast.success("About union has been updated successfully")
 
         } catch (error) {
             console.error('Error updating document: ', error);
+            toast.error("error the About Union hasn't been updated")
+        }finally{
+          setIsLoading(false)
         }
     }
 };
@@ -229,9 +237,9 @@ const deleteFile = async (fileUrl: string) => {
       )}
 
       {editing && (
-        <button onClick={handleSave} className="mt-8 px-4 py-2 bg-blue-600 text-white rounded-md">
+        <Button isLoading={isLoading} onClick={handleSave} className="mt-8 px-4 py-2 bg-blue-600 text-white rounded-md">
           Save Changes
-        </button>
+        </Button>
       )}
     </div>
   );

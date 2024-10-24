@@ -3,6 +3,7 @@ import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import Button from './Button';
 
 interface EventCreateProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ const modules = {
   ],
 }
 
-const EventCreate: React.FC<EventCreateProps> = ({ isOpen, onClose, eventToEdit }) => {
+const EventCreate = ({ isOpen, onClose, eventToEdit }: EventCreateProps) => {
   const [titleEn, setTitleEn] = useState('');
   const [titleAr, setTitleAr] = useState('');
   const [descriptionEn, setDescriptionEn] = useState('');
@@ -33,6 +34,7 @@ const EventCreate: React.FC<EventCreateProps> = ({ isOpen, onClose, eventToEdit 
   const [locationLink, setLocationLink] = useState('');
   const [locationTextEn, setLocationTextEn] = useState('');
   const [locationTextAr, setLocationTextAr] = useState('');
+  const [isLoading, setIsLoading ] = useState<boolean>(false)
   const [img, setImg] = useState('');
 
   useEffect(() => {
@@ -63,16 +65,17 @@ const EventCreate: React.FC<EventCreateProps> = ({ isOpen, onClose, eventToEdit 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const eventData = {
-      title: { en: titleEn, ar: titleAr },
-      description: { en: descriptionEn, ar: descriptionAr },
-      eventTime: Timestamp.fromDate(new Date(eventTime)),
-      locationLink,
-      locationText: { en: locationTextEn, ar: locationTextAr },
-      img,
-    };
-
     try {
+      setIsLoading(true)
+      const eventData = {
+        title: { en: titleEn, ar: titleAr },
+        description: { en: descriptionEn, ar: descriptionAr },
+        eventTime: Timestamp.fromDate(new Date(eventTime)),
+        locationLink,
+        locationText: { en: locationTextEn, ar: locationTextAr },
+        img,
+      };
+
       if (eventToEdit) {
         await setDoc(doc(db, 'events', eventToEdit.id), eventData);
       } else {
@@ -81,6 +84,8 @@ const EventCreate: React.FC<EventCreateProps> = ({ isOpen, onClose, eventToEdit 
       onClose();
     } catch (error) {
       console.error('Error saving event:', error);
+    }finally {
+      setIsLoading(false)
     }
   };
 
@@ -185,12 +190,12 @@ const EventCreate: React.FC<EventCreateProps> = ({ isOpen, onClose, eventToEdit 
             />
           </div>
           <div className="flex justify-end">
-            <button type="button" onClick={onClose} className="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+            <button disabled={isLoading} type="button" onClick={onClose} className="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
               Cancel
             </button>
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+            <Button isLoading={isLoading} type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
               {eventToEdit ? 'Update' : 'Create'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
