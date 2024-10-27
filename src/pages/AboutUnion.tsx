@@ -32,7 +32,6 @@ interface AboutUsData {
     title: { ar: string; en: string };
   };
 }
-
 const AboutUs = () => {
   const [aboutUsData, setAboutUsData] = useState<AboutUsData | null>(null);
   const [originalData, setOriginalData] = useState<AboutUsData | null>(null);

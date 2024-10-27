@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { auth, signInWithEmailAndPassword } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/Button';
 
 const LoginPage = () => {
-    
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('');
-
+  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/')
       console.log("User logged in successfully");
     } catch (error: any) {
       setError(error.message);
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -49,24 +52,13 @@ const LoginPage = () => {
               required
             />
           </div>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="mr-2"
-              />
-              <label className="text-sm">Remember Me</label>
-            </div>
-            <a href="#" className="text-sm text-blue-500">Forgot Password?</a>
-          </div>
-          <button
+          <Button
             type="submit"
+            isLoading={isLoading}
             className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600"
           >
             Login
-          </button>
+          </Button>
         </form>
       </div>
     </div>

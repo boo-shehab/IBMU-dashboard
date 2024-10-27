@@ -4,6 +4,7 @@ import MessageModal from '../components/MessageModal';
 import { collection, getDocs, Timestamp, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { FaEye } from 'react-icons/fa';
+import Button from '../components/Button';
 
 interface Messages {
   email: string;
@@ -19,6 +20,9 @@ const MessagesPage = () => {
   const [messages, setMessages] = useState<{ id: string; data: Messages }[]>([]);
   const [selectedMessage, setSelectedMessage] = useState<{ id: string; data: Messages } | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRespondLoading, setIsRespondLoading] = useState(false)
+  const [isMarkAsReadLoading, setIsMarkAsReadLoading] = useState(false)
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [filter, setFilter] = useState<'all' | 'new' | 'read' | 'responded'>('all');
 
   const getMessages = async () => {
@@ -54,9 +58,8 @@ const MessagesPage = () => {
 
   const handleRespond = async () => {
     if (selectedMessage) {
+      setIsRespondLoading(true)
       try {
-        alert(`Responding to ${selectedMessage.data.name}`);
-
         await updateDoc(doc(db, 'Message', selectedMessage.id), { 
           status: 'responded'
         });
@@ -70,12 +73,15 @@ const MessagesPage = () => {
         closeModal();
       } catch (error) {
         console.error('Error responding to message:', error);
+      }finally{
+        setIsRespondLoading(false)
       }
     }
   };
 
   const handleMarkAsRead = async () => {
     if (selectedMessage) {
+      setIsMarkAsReadLoading(true)
       try {
         await updateDoc(doc(db, 'Message', selectedMessage.id), { 
           status: 'read'
@@ -90,12 +96,15 @@ const MessagesPage = () => {
         closeModal();
       } catch (error) {
         console.error('Error marking message as read:', error);
+      }finally {
+        setIsMarkAsReadLoading(false)
       }
     }
   };
 
   const handleDelete = async () => {
     if (selectedMessage) {
+      setIsDeleteLoading(true)
       try {
         await deleteDoc(doc(db, 'Message', selectedMessage.id));
         setMessages((prevMessages) => prevMessages.filter(msg => msg.id !== selectedMessage.id));
@@ -103,6 +112,8 @@ const MessagesPage = () => {
         closeModal();
       } catch (error) {
         console.error('Error deleting message:', error);
+      }finally {
+        setIsDeleteLoading(false)
       }
     }
   };
@@ -154,15 +165,15 @@ const MessagesPage = () => {
         onClose={closeModal}
         message={selectedMessage ? { ...selectedMessage.data, timestamp: selectedMessage.data.timestamp.toDate().toLocaleString() } : null}
       >
-          <button onClick={handleRespond} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          <Button isLoading={isRespondLoading} disabled={isMarkAsReadLoading || isDeleteLoading} onClick={handleRespond} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
             Respond
-          </button>
-          <button onClick={handleMarkAsRead} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+          </Button>
+          <Button isLoading={isMarkAsReadLoading} disabled={isRespondLoading || isDeleteLoading} onClick={handleMarkAsRead} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
             Mark as Read
-          </button>
-          <button onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+          </Button>
+          <Button isLoading={isDeleteLoading} disabled={isRespondLoading || isMarkAsReadLoading} onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
             Delete
-          </button>
+          </Button>
       </MessageModal>
     </div>
   );

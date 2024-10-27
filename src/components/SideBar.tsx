@@ -17,7 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }: any) => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } w-64 bg-gray-800 text-white transition-transform duration-300 ease-in-out z-50 lg:z-auto lg:static lg:translate-x-0 lg:w-64 lg:h-full`}
+        } w-64 bg-gray-900 text-white transition-transform duration-300 ease-in-out z-50 lg:z-auto lg:static lg:translate-x-0 lg:w-64 lg:h-full`}
       >
         <div className="flex items-center justify-between py-8 px-4 bg-gray-900">
           <img src={logo} className="w-20 h-20 rounded-xl" alt="logo" />

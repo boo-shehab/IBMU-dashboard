@@ -196,61 +196,65 @@ const ContactInfoPage = () => {
         </div>
 
         <h3 className="text-xl font-semibold mb-4 text-center">Working Times</h3>
-        <div className="flex flex-col">
-          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.days.en">Working Days (EN)</label>
-          <input
-            type="text"
-            id="workingTimes.days.en"
-            name="workingTimes.days.en"
-            value={aboutUsData?.workingTimes.days.en || ''}
-            onChange={handleChange}
-            required
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
-          />
-          {errors['workingTimes.days.en'] && <span className="text-red-500 text-sm">{errors['workingTimes.days.en']}</span>}
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex w-full flex-col">
+            <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.days.en">Working Days (EN)</label>
+            <input
+              type="text"
+              id="workingTimes.days.en"
+              name="workingTimes.days.en"
+              value={aboutUsData?.workingTimes.days.en || ''}
+              onChange={handleChange}
+              required
+              className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            {errors['workingTimes.days.en'] && <span className="text-red-500 text-sm">{errors['workingTimes.days.en']}</span>}
+          </div>
+
+          <div className="flex w-full flex-col">
+            <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.days.ar">Working Days (AR)</label>
+            <input
+              type="text"
+              id="workingTimes.days.ar"
+              name="workingTimes.days.ar"
+              value={aboutUsData?.workingTimes.days.ar || ''}
+              onChange={handleChange}
+              required
+              className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            {errors['workingTimes.days.ar'] && <span className="text-red-500 text-sm">{errors['workingTimes.days.ar']}</span>}
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex w-full flex-col">
+            <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.time.en">Working Time (EN)</label>
+            <input
+              type="text"
+              id="workingTimes.time.en"
+              name="workingTimes.time.en"
+              value={aboutUsData?.workingTimes.time.en || ''}
+              onChange={handleChange}
+              required
+              className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            {errors['workingTimes.time.en'] && <span className="text-red-500 text-sm">{errors['workingTimes.time.en']}</span>}
+          </div>
+
+          <div className="flex w-full flex-col">
+            <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.time.ar">Working Time (AR)</label>
+            <input
+              type="text"
+              id="workingTimes.time.ar"
+              name="workingTimes.time.ar"
+              value={aboutUsData?.workingTimes.time.ar || ''}
+              onChange={handleChange}
+              required
+              className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
+            />
+            {errors['workingTimes.time.ar'] && <span className="text-red-500 text-sm">{errors['workingTimes.time.ar']}</span>}
+          </div>
         </div>
 
-        <div className="flex flex-col">
-          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.days.ar">Working Days (AR)</label>
-          <input
-            type="text"
-            id="workingTimes.days.ar"
-            name="workingTimes.days.ar"
-            value={aboutUsData?.workingTimes.days.ar || ''}
-            onChange={handleChange}
-            required
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
-          />
-          {errors['workingTimes.days.ar'] && <span className="text-red-500 text-sm">{errors['workingTimes.days.ar']}</span>}
-        </div>
-
-        <div className="flex flex-col">
-          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.time.en">Working Time (EN)</label>
-          <input
-            type="text"
-            id="workingTimes.time.en"
-            name="workingTimes.time.en"
-            value={aboutUsData?.workingTimes.time.en || ''}
-            onChange={handleChange}
-            required
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
-          />
-          {errors['workingTimes.time.en'] && <span className="text-red-500 text-sm">{errors['workingTimes.time.en']}</span>}
-        </div>
-
-        <div className="flex flex-col">
-          <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="workingTimes.time.ar">Working Time (AR)</label>
-          <input
-            type="text"
-            id="workingTimes.time.ar"
-            name="workingTimes.time.ar"
-            value={aboutUsData?.workingTimes.time.ar || ''}
-            onChange={handleChange}
-            required
-            className="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring focus:ring-blue-500"
-          />
-          {errors['workingTimes.time.ar'] && <span className="text-red-500 text-sm">{errors['workingTimes.time.ar']}</span>}
-        </div>
 
         <Button
           type="submit"
