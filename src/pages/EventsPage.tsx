@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import Card from '../components/Card';
-import { collection, getDocs, Timestamp } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, Timestamp } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import { MdEdit } from "react-icons/md";
 import EventCreate from '../components/EventCreate';
+import Button from '../components/Button';
 
 
 interface Event {
@@ -19,6 +20,7 @@ const EventPage = () => {
   const [events, setEvents] = useState<{ id: string; data: Event }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [eventToEdit, setEventToEdit] = useState<any | null>(null);
+  const [loadingStates, setLoadingStates] = useState<{ [id: string]: boolean }>({});
 
   const getEvents = async () => {
     try {
@@ -56,6 +58,17 @@ const EventPage = () => {
     setEventToEdit(null); 
     getEvents();
   };
+  const handleDelete = async (id: string) => {
+      setLoadingStates((prev) => ({ ...prev, [id]: true }));
+      try {
+          await deleteDoc(doc(db, 'events', id));
+          setEvents((prevEvents) => prevEvents.filter((eventItem) => eventItem.id !== id));
+      } catch (error) {
+          console.error('Error deleting news:', error);
+      } finally {
+          setLoadingStates((prev) => ({ ...prev, [id]: false }));
+      }
+  };
   return (
     <div>
       <header className="flex justify-between items-center mb-4">
@@ -78,7 +91,16 @@ const EventPage = () => {
               icon={<MdEdit className="mr-1 text-yellow-400" />}
               description={<div className="default-styles" dangerouslySetInnerHTML={{ __html: event.data.description.en}}></div>} 
               onViewDetails={() => handleEdit(event)}
-            />
+            >
+              
+              <Button
+                isLoading={loadingStates[event.id] || false}
+                onClick={() => handleDelete(event.id)}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Delete
+              </Button>
+            </Card>
           ))
         ) : (
           <p>No events found.</p>

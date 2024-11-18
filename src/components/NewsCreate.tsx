@@ -175,7 +175,7 @@ const NewsCreate = ({ isOpen, onClose, newsToEdit }: NewsCreateProps) => {
               value={contentEn}
               modules={modules}
               onChange={setContentEn}
-              className="w-full h-[10rem] pb-10"
+              className="w-full pb-10"
             />
           </div>
           <div className="mb-4">
@@ -184,7 +184,7 @@ const NewsCreate = ({ isOpen, onClose, newsToEdit }: NewsCreateProps) => {
               value={contentAr}
               modules={modules}
               onChange={setContentAr}
-              className="w-full h-[10rem] pb-10"
+              className="w-full pb-10"
             />
           </div>
           <div className='flex items-center'>
