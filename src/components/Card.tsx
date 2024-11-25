@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../assets/logo.jpg'
 import { FaEye } from 'react-icons/fa';
 
 interface CardProps {
@@ -14,10 +15,16 @@ interface CardProps {
 const Card = ({ image, title, date, description, onViewDetails,icon, children}: CardProps) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-      {image && (
+      {image? (
         <img
           className="w-full h-48 object-cover"
           src={image}
+          alt="Card Image"
+        />
+      ) : (
+        <img
+          className="w-full h-48 object-contain"
+          src={logo}
           alt="Card Image"
         />
       )}
