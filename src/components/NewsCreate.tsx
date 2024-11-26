@@ -18,6 +18,7 @@ const modules = {
     [{ 'size': ['small', false, 'large', 'huge'] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+    [{ 'align': [] }],
     ['link'],
     [{ 'direction': 'rtl' }],
     [{
@@ -113,7 +114,7 @@ const NewsCreate = ({ isOpen, onClose, newsToEdit }: NewsCreateProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-9/12 h-3/4 overflow-auto">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-screen h-screen overflow-auto">
         <h2 className="text-xl font-semibold mb-4">{newsToEdit ? 'Edit News' : 'Create News'}</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4 flex gap-4">
