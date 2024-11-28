@@ -102,6 +102,7 @@ const NewsCreate = ({ isOpen, onClose, newsToEdit }: NewsCreateProps) => {
       } else {
         await setDoc(doc(db, 'news', Date.now().toString()), newsData);
       }
+      resetForm()
       onClose();
     } catch (error) {
       console.error('Error saving news:', error);
