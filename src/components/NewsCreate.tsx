@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { storage, db } from '../firebaseConfig';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -39,6 +39,8 @@ const NewsCreate = ({ isOpen, onClose, newsToEdit }: NewsCreateProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [isImageURL, setIsImageURL] = useState(true); 
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  console.log(contentAr);
+  console.log(contentEn);
 
   useEffect(() => {
     if (newsToEdit) {

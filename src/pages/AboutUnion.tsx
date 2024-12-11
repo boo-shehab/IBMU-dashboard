@@ -248,7 +248,6 @@ const EditableSection = ({
     content,
     img,
     pdf,
-    isEnglish,
     newImage,
     newPdf,
     editing,

@@ -1,5 +1,4 @@
 // src/components/MessageModal.tsx
-import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 interface MessageModalProps {

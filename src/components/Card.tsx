@@ -1,6 +1,4 @@
-import React from 'react';
 import logo from '../assets/logo.jpg'
-import { FaEye } from 'react-icons/fa';
 
 interface CardProps {
   image?: string;

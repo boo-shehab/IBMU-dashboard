@@ -28,7 +28,6 @@ interface Headquarter {
 
 const ContactInfoPage = () => {
   const [aboutUsData, setAboutUsData] = useState<Headquarter | null>(null);
-  const [originalData, setOriginalData] = useState<Headquarter | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [docId, setDocId] = useState<string | null>(null);
   const [phone, setPhone] = useState<string | undefined>('964');
@@ -39,7 +38,6 @@ const ContactInfoPage = () => {
     querySnapshot.forEach((doc) => {
       const data = doc.data() as Headquarter;
       setAboutUsData(data);
-      setOriginalData(data);
       setDocId(doc.id);
       setPhone(data.phone);
     });
@@ -91,17 +89,12 @@ const ContactInfoPage = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
-    setIsLoading(true)
+    setIsLoading(true);
     e.preventDefault();
-    try{
-      if (validateForm()) {
-        if (docId) {
-          await updateDoc(doc(db, 'Headquarter', docId), aboutUsData);
-        }
-      }
-      toast.success('Contact info updated successfully', {
+  
+    if (!aboutUsData) {
+      toast.error("No data to update.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -110,25 +103,59 @@ const ContactInfoPage = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        transition: Bounce
-        });
-      }catch(e){
-        console.log(e);
-        toast.error(`error ContactInfo hasn't be updated`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce
-        });
-      }finally{
-        setIsLoading(false)
+        transition: Bounce,
+      });
+      setIsLoading(false);
+      return;
+    }
+  
+    try {
+      if (validateForm()) {
+        if (docId) {
+          await updateDoc(doc(db, 'Headquarter', docId), aboutUsData as Record<string, any>);
+          toast.success('Contact info updated successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        } else {
+          toast.error("Document ID is missing.", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        }
       }
+    } catch (e) {
+      console.error(e);
+      toast.error(`Error: Contact info hasn't been updated.`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
+  
 
   useEffect(() => {
     fetchAboutUsData().catch((error) => {

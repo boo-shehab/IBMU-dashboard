@@ -1,6 +1,7 @@
 {
   "name": "ibmu-dashboard",
   "private": true,
+  "homepage": "https://dashboard.ibmu.com.iq",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

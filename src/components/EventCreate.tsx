@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 import ReactQuill from 'react-quill';
